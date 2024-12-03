@@ -24,11 +24,11 @@ function App() {
         
         // Get all FA tokens
         const fas = await routex.getFungibleAssets();
-        console.log('Available FA tokens:', fas);
+        // console.log('Available FA tokens:', fas);
         
         // Get all Coin tokens
         const coins = await routex.getCoins();
-        console.log('Available Coin tokens:', coins);
+        // console.log('Available Coin tokens:', coins);
         
         // Process token list
         const processedTokens = [
