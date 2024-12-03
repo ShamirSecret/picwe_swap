@@ -4,7 +4,10 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/picwe_swap/',
+  base: './',
+  build: {
+    outDir: 'docs',
+  },
   server: {
     proxy: {
       '/v1': {
