@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Routex, Network, getDefaultClient, FA_ADDRESSES } from "@routexio/sdk";
 import { AptosConnectButton, useAptosWallet, useAptosAccountBalance } from '@razorlabs/wallet-kit';
 import './App.css';
-
 function App() {
   const [fromToken, setFromToken] = useState('');
   const [toToken, setToToken] = useState('');
@@ -16,24 +15,24 @@ function App() {
   const wallet = useAptosWallet();
   const [notification, setNotification] = useState({ show: false, type: '', message: '' });
 
-  // 初始化代币列表
+  // Initialize token list
   useEffect(() => {
     const initTokens = async () => {
       try {
         const client = getDefaultClient(Network.Porto);
         const routex = new Routex({ client, network: Network.Porto });
         
-        // 获取所有FA代币
+        // Get all FA tokens
         const fas = await routex.getFungibleAssets();
-        console.log('可用的FA代币:', fas);
+        console.log('Available FA tokens:', fas);
         
-        // 获取所有Coin代币
+        // Get all Coin tokens
         const coins = await routex.getCoins();
-        console.log('可用的Coin代币:', coins);
+        console.log('Available Coin tokens:', coins);
         
-        // 处理代币列表
+        // Process token list
         const processedTokens = [
-          // 处理FA代币
+          // Process FA tokens
           ...fas.map(token => ({
             address: token.address?.toString() || '',
             name: token.name || token.symbol || 'Unknown Token',
@@ -42,7 +41,7 @@ function App() {
             logo: token.logo || '',
             type: 'FA'
           })),
-          // 处理Coin代币
+          // Process Coin tokens
           ...coins.map(coin => ({
             address: coin.type_,
             name: coin.name || 'Unknown Token',
@@ -53,18 +52,18 @@ function App() {
           }))
         ];
 
-        console.log('处理后的所有代币:', processedTokens);
+        console.log('Processed all tokens:', processedTokens);
         setAllTokens(processedTokens);
 
       } catch (error) {
-        console.error('初始化代币列表失败:', error);
+        console.error('Failed to initialize token list:', error);
       }
     };
 
     initTokens();
   }, []);
 
-  // 获取当前标签页可用的代币
+  // Get tokens by current tab
   const getTokensByTab = (tab) => {
     return allTokens.filter(token => {
       if (tab === 'FA') return token.type === 'FA';
@@ -72,17 +71,17 @@ function App() {
     });
   };
 
-  // 获取可选的目标代币列表（始终返回FA代币）
+  // Get available target token list (always returns FA tokens)
   const getAvailableToTokens = (fromTokenInfo) => {
     if (!fromTokenInfo) return [];
-    // 始终返回FA代币列表，但排除当前选择的代币（如果它是FA代币）
+    // Always return FA token list, excluding the currently selected token (if it's an FA token)
     return allTokens.filter(t => 
       t.type === 'FA' && 
       (fromTokenInfo.type !== 'FA' || t.address !== fromTokenInfo.address)
     );
   };
 
-  // 当切换标签页时重置选择
+  // Reset selections when switching tabs
   useEffect(() => {
     setFromToken('');
     setToToken('');
@@ -90,7 +89,7 @@ function App() {
     setRouting(null);
   }, [activeTab]);
 
-  // 获取预计兑换数量
+  // Get estimated exchange amount
   useEffect(() => {
     const debounceTimeout = setTimeout(async () => {
       if (!fromToken || !toToken || !amount || parseFloat(amount) <= 0) {
@@ -107,7 +106,7 @@ function App() {
         const fromTokenInfo = allTokens.find(t => t.address === fromToken);
         const toTokenInfo = allTokens.find(t => t.address === toToken);
         
-        console.log('交换类型:', {
+        console.log('Exchange type:', {
           from: fromTokenInfo?.type,
           to: toTokenInfo?.type,
           fromToken,
@@ -118,7 +117,7 @@ function App() {
         const decimal = fromTokenInfo?.decimal || 8;
         const amountWithDecimal = BigInt(Math.floor(parseFloat(amount) * Math.pow(10, decimal)));
         
-        console.log('请求路由参数:', {
+        console.log('Routing request parameters:', {
           fromToken,
           toToken,
           amountWithDecimal: amountWithDecimal.toString(),
@@ -127,7 +126,7 @@ function App() {
         });
 
         const routingInfo = await routex.getRouting(fromToken, toToken, amountWithDecimal);
-        console.log('获取到的路由信息:', {
+        console.log('Received routing information:', {
           ...routingInfo,
           amount_in: routingInfo.amount_in?.toString(),
           amount_out: routingInfo.amount_out?.toString()
@@ -136,7 +135,7 @@ function App() {
         if (routingInfo && routingInfo.amount_out) {
           const toDecimal = toTokenInfo?.decimal || 8;
           const estimatedAmountFormatted = (Number(routingInfo.amount_out) / Math.pow(10, toDecimal)).toFixed(6);
-          console.log('计算结果:', {
+          console.log('Calculation result:', {
             toTokenInfo,
             toDecimal,
             estimatedAmountFormatted
@@ -145,13 +144,13 @@ function App() {
           setEstimatedAmount(estimatedAmountFormatted);
         }
       } catch (error) {
-        console.error('获取路由失败:', error);
+        console.error('Failed to get routing:', error);
         setRouting(null);
         setEstimatedAmount('');
       } finally {
         setIsCalculating(false);
       }
-    }, 2000); // 增加防抖时间到2秒
+    }, 2000); // Increase debounce time to 2 seconds
 
     return () => clearTimeout(debounceTimeout);
   }, [fromToken, toToken, amount, allTokens]);
@@ -238,7 +237,7 @@ function App() {
     <div className="app-container">
       <div className="header">
         <div className="wallet-connect">
-          <div style={{ minHeight: '40px' }}>
+          <div>
             <AptosConnectButton />
           </div>
         </div>
