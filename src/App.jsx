@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Routex, Network, getDefaultClient } from "@routexio/sdk";
-import { AptosConnectButton, useAptosWallet, useAptosAccountBalance } from '@razorlabs/wallet-kit';
+import { AptosConnectButton, useAptosWallet, useAptosAccountBalance, AptosWalletProvider } from '@razorlabs/wallet-kit';
 import logo from "./assets/logo.png";
 import './App.css';
+import CustomSelect from './components/CustomSelect';
 
 function App() {
   const [fromToken, setFromToken] = useState('');
@@ -16,6 +17,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('FA'); // 'FA' or 'COIN'
   const wallet = useAptosWallet();
   const [notification, setNotification] = useState({ show: false, type: '', message: '' });
+  const [showInfo, setShowInfo] = useState(false);
 
   // Initialize token list
   useEffect(() => {
@@ -212,7 +214,12 @@ function App() {
         throw new Error('Failed to get transaction hash');
       }
 
-      showNotification('info', `Transaction submitted with hash: ${transaction.args.hash}`);
+      showNotification('info', (
+        <>
+          Transaction submitted
+          <span className="hash">{transaction.args.hash}</span>
+        </>
+      ));
 
       // 等待交易确认
       await client.waitForTransaction({
@@ -236,139 +243,168 @@ function App() {
     }
   };
 
+  // 添加一个处理连接的函数
+  const handleConnect = async () => {
+    try {
+      await wallet.connect();
+    } catch (error) {
+      console.error('Wallet connection failed:', error);
+      showNotification('error', 'Failed to connect wallet');
+    }
+  };
+
   return (
-    <div className="app-container">
-      <div className="header">
-        <div className="logo-img"><img src={logo} alt="" /></div>
-        <div className="wallet-connect">
-          <div>
-            <AptosConnectButton />
+    <AptosWalletProvider>
+      <div className="app-container">
+        <div className="header">
+          <div className="left-section">
+            <div className="logo-img">
+              <img src={logo} alt="" />
+            </div>
+            <nav className="main-nav">
+              <a href="https://app.picwe.org/swap" target="_blank" rel="noopener noreferrer">OmiSwap</a>
+              <a href="https://app.picwe.org/mint" target="_blank" rel="noopener noreferrer">WeUSD</a>
+              <a href="https://app.picwe.org/mint" target="_blank" rel="noopener noreferrer">Docs</a>
+            </nav>
+          </div>
+          <div className="wallet-connect">
+            <AptosConnectButton>Connect Wallet</AptosConnectButton>
           </div>
         </div>
-      </div>
 
-      <div className="swap-container">
-        <h1>PicWe Swap</h1>
-        
-        <div className="token-tabs">
-          <button 
-            className={activeTab === 'FA' ? 'active' : ''} 
-            onClick={() => setActiveTab('FA')}
-          >
-            FA Tokens
-          </button>
-          <button 
-            className={activeTab === 'COIN' ? 'active' : ''} 
-            onClick={() => setActiveTab('COIN')}
-          >
-            Coin Tokens
-          </button>
-        </div>
-        
-        <div className="swap-form">
-          <div className="input-group">
-            <div className="token-select">
-              <select 
-                value={fromToken}
-                onChange={(e) => {
-                  setFromToken(e.target.value);
-                  setToToken('');
-                }}
-              >
-                <option value="">Select Token</option>
-                {getTokensByTab(activeTab).map(token => (
-                  <option key={token.address} value={token.address}>
-                    {token.symbol} - {token.name}
-                  </option>
-                ))}
-              </select>
-              {fromToken && allTokens.find(t => t.address === fromToken)?.logo && (
-                <img 
-                  src={allTokens.find(t => t.address === fromToken)?.logo} 
-                  alt="" 
-                  className="token-logo"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
-                />
-              )}
-            </div>
-            <input
-              type="text"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="0.0"
-            />
-          </div>
-
-          <div className="swap-arrow">↓</div>
-
-          <div className="input-group">
-            <div className="token-select">
-              <select
-                value={toToken}
-                onChange={(e) => setToToken(e.target.value)}
-              >
-                <option value="">Select FA Token</option>
-                {fromToken && getAvailableToTokens(allTokens.find(t => t.address === fromToken))
-                  .map(token => (
-                    <option key={token.address} value={token.address}>
-                      {token.symbol} - {token.name}
-                    </option>
-                  ))}
-              </select>
-              {toToken && allTokens.find(t => t.address === toToken)?.logo && (
-                <img 
-                  src={allTokens.find(t => t.address === toToken)?.logo} 
-                  alt="" 
-                  className="token-logo"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
-                />
-              )}
-            </div>
-            <input
-              type="text"
-              value={estimatedAmount || '0.0'}
-              readOnly
-              placeholder="0.0"
-            />
-          </div>
-
-          {routing && routing.routers && (
-            <div className="routing-info">
-              <h3>Route Path</h3>
-              <div className="route-path">
-                {routing.routers.map((router, index) => (
-                  <span key={index}>
-                    {router.name}
-                    {index < routing.routers.length - 1 ? ' → ' : ''}
-                  </span>
-                ))}
+        <div className="swap-container">
+          <h1>
+            PicWe Swap 
+            <span className="info-icon" onClick={() => setShowInfo(!showInfo)}>?</span>
+          </h1>
+          
+          {showInfo && (
+            <div className="modal-overlay" onClick={() => setShowInfo(false)}>
+              <div className="modal-content" onClick={e => e.stopPropagation()}>
+                <div className="modal-header">
+                  <h2>Token Types</h2>
+                  <span className="close-button" onClick={() => setShowInfo(false)}>×</span>
+                </div>
+                <div className="modal-body">
+                  <div className="token-type">
+                    <h3>FA Token</h3>
+                    <p>Fungible Asset tokens on Aptos, similar to ERC-20 tokens on Ethereum.</p>
+                  </div>
+                  <div className="token-type">
+                    <h3>Coin Token</h3>
+                    <p>Native coins on Aptos, including MOVE and other coins.</p>
+                  </div>
+                </div>
               </div>
             </div>
           )}
-
-          <button 
-            onClick={handleSwap}
-            disabled={isLoading || !fromToken || !toToken || !amount || !routing || !wallet.connected || isCalculating}
-            style={{ minHeight: '50px' }}
-          >
-            {!wallet.connected ? 'Connect Wallet' : 
-              isLoading ? 'Swapping...' : 
-              isCalculating ? 'Calculating...' : 
-              'Swap'}
-          </button>
-        </div>
-
-        {notification.show && (
-          <div className={`notification ${notification.type}`}>
-            {notification.message}
+          
+          <div className="token-tabs">
+            <button 
+              className={activeTab === 'FA' ? 'active' : ''} 
+              onClick={() => setActiveTab('FA')}
+            >
+              FA Tokens
+            </button>
+            <button 
+              className={activeTab === 'COIN' ? 'active' : ''} 
+              onClick={() => setActiveTab('COIN')}
+            >
+              Coin Tokens
+            </button>
           </div>
-        )}
+          
+          <div className="swap-form">
+            <div className="input-group">
+              <div className="token-select">
+                <CustomSelect
+                  options={getTokensByTab(activeTab).map(token => ({
+                    value: token.address,
+                    label: `${token.symbol} - ${token.name}`,
+                    logo: token.logo
+                  }))}
+                  value={fromToken}
+                  onChange={(value) => {
+                    setFromToken(value);
+                    setToToken('');
+                  }}
+                  placeholder="Select Token"
+                />
+              </div>
+              <input
+                type="text"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="0.0"
+              />
+            </div>
+
+            <div className="swap-arrow">↓</div>
+
+            <div className="input-group">
+              <div className="token-select">
+                <CustomSelect
+                  options={fromToken ? 
+                    getAvailableToTokens(allTokens.find(t => t.address === fromToken))
+                      .map(token => ({
+                        value: token.address,
+                        label: `${token.symbol} - ${token.name}`,
+                        logo: token.logo
+                      })) : []
+                  }
+                  value={toToken}
+                  onChange={setToToken}
+                  placeholder="Select FA Token"
+                />
+              </div>
+              <div className="amount-wrapper">
+                {isCalculating ? (
+                  <div className="calculating">Calculating...</div>
+                ) : (
+                  <input
+                    type="text"
+                    value={estimatedAmount || '0.0'}
+                    readOnly
+                    placeholder="0.0"
+                  />
+                )}
+              </div>
+            </div>
+
+            {routing && routing.routers && (
+              <div className="routing-info">
+                <h3>Route Path</h3>
+                <div className="route-path">
+                  {routing.routers.map((router, index) => (
+                    <span key={index}>
+                      {router.name}
+                      {index < routing.routers.length - 1 ? ' → ' : ''}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <button 
+              onClick={handleSwap}
+              disabled={isLoading || !fromToken || !toToken || !amount || !routing || !wallet.connected || isCalculating}
+              style={{ minHeight: '50px' }}
+            >
+              {!wallet.connected ? 'Connect Wallet' : 
+                isLoading ? 'Swapping...' : 
+                isCalculating ? 'Calculating...' : 
+                'Swap'}
+            </button>
+          </div>
+
+          {notification.show && (
+            <div className={`notification ${notification.type}`}>
+              {notification.message}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </AptosWalletProvider>
   );
 }
 

@@ -177,14 +177,45 @@ button:disabled {
   position: fixed;
   top: 0;
   right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  z-index: 100;
 }
 
-.logo-img{
- margin: 10px 0 0 10px;
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 40px;
 }
-.logo-img img{
-  width: 70%;
-  height: 70%;
+
+.logo-img {
+  margin: 0;
+}
+
+.logo-img img {
+  width: 120px;
+  height: auto;
+}
+
+.main-nav {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.main-nav a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.main-nav a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .wallet-connect {
@@ -193,27 +224,18 @@ button:disabled {
   padding: 10px;
 }
 
-.wallet-connect > div {
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-}
-
 .wallet-connect button {
   padding: 8px 16px !important;
   border-radius: 12px !important;
   font-size: 16px !important;
   font-weight: 600 !important;
-  cursor: pointer !important;
   min-width: 140px !important;
   height: 40px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.3s !important;
   background-color: rgba(255, 196, 0, 0.9) !important;
   color: #000 !important;
   border: none !important;
+  cursor: pointer !important;
+  transition: all 0.3s !important;
 }
 
 .wallet-connect button:hover {
@@ -221,7 +243,7 @@ button:disabled {
 }
 
 .logo, nav, nav a {
-  display: none;
+  display: initial;
 }
 
 .token-tabs {
@@ -256,53 +278,114 @@ button:disabled {
 
 .token-select {
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  width: 100%;
 }
 
 .token-select select {
-  padding-right: 40px;
-  min-width: 150px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.token-select select option {
+  background-color: #2a2a2a;
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .token-logo {
+  display: none;
+}
+
+.custom-select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #2a2a2a;
+  border-radius: 10px;
+  margin-top: 5px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.select-option {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.select-option:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.select-option img {
   width: 24px;
   height: 24px;
   border-radius: 50%;
+  margin-right: 10px;
   object-fit: cover;
-  position: absolute;
-  right: 8px;
-  pointer-events: none;
+}
+
+.select-option span {
+  flex: 1;
 }
 
 .notification {
   position: fixed;
   top: 80px;
   right: 20px;
-  padding: 16px 24px;
-  border-radius: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
   color: #fff;
-  font-size: 14px;
-  max-width: 400px;
+  font-size: 13px;
+  max-width: 300px;
+  min-width: 200px;
   animation: slideIn 0.3s ease-out;
-  z-index: 1000;
+  z-index: 1001;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+  line-height: 1.4;
+  word-break: break-word;
+  pointer-events: none;
 }
 
 .notification.success {
-  background-color: rgba(34, 197, 94, 0.9);
+  background-color: rgba(34, 197, 94, 0.85);
   border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
 .notification.error {
-  background-color: rgba(239, 68, 68, 0.9);
+  background-color: rgba(239, 68, 68, 0.85);
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .notification.info {
-  background-color: rgba(59, 130, 246, 0.9);
+  background-color: rgba(59, 130, 246, 0.85);
   border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.notification .hash {
+  font-size: 12px;
+  opacity: 0.9;
+  display: block;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 @keyframes slideIn {
@@ -322,4 +405,471 @@ button:disabled {
   margin: 4px 0;
   text-align: right;
   padding-right: 10px;
+}
+
+/* 添加新的样式 */
+.token-info {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 15px;
+  margin: 10px 0 20px;
+  backdrop-filter: blur(5px);
+}
+
+.token-description {
+  color: #b8b8b8;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  text-align: center;
+}
+
+/* 化现有组件样式 */
+.swap-container {
+  background: rgba(28, 28, 28, 0.8);
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.token-tabs {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.token-tabs button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.token-tabs button.active {
+  background: #3898ff;
+  box-shadow: 0 0 15px rgba(56, 152, 255, 0.3);
+}
+
+.input-group {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 15px;
+  margin: 10px 0;
+}
+
+.token-select select {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.token-select img.token-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+input {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+  width: 100%;
+  padding: 10px;
+}
+
+input:focus {
+  outline: none;
+}
+
+.swap-arrow {
+  text-align: center;
+  font-size: 24px;
+  color: #3898ff;
+  margin: 10px 0;
+}
+
+.routing-info {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.routing-info h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: #b8b8b8;
+}
+
+.route-path {
+  font-size: 14px;
+  color: #3898ff;
+}
+
+button {
+  background: #3898ff;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  padding: 15px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:disabled {
+  background: #2a2a2a;
+  cursor: not-allowed;
+}
+
+.notification {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  max-width: 300px;
+  min-width: 200px;
+  animation: slideIn 0.3s ease-out;
+  z-index: 1001;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+  line-height: 1.4;
+  word-break: break-word;
+  pointer-events: none;
+}
+
+.notification.success {
+  background-color: rgba(34, 197, 94, 0.85);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.notification.error {
+  background-color: rgba(239, 68, 68, 0.85);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.notification.info {
+  background-color: rgba(59, 130, 246, 0.85);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.notification .hash {
+  font-size: 12px;
+  opacity: 0.9;
+  display: block;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* 添加问号图标样式 */
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  margin-left: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.info-icon:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* 修改 token select 样式 */
+.token-select {
+  position: relative;
+  width: 100%;
+}
+
+.select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.token-select select {
+  appearance: none;
+  padding-right: 40px; /* 为logo预留空间 */
+  width: 100%;
+}
+
+.token-logo {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* 添加计算中的样式 */
+.amount-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.calculating {
+  color: #b8b8b8;
+  font-size: 14px;
+  padding: 10px;
+  text-align: right;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* 调整标题样式 */
+h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* 添加下拉箭头样式 */
+.select-header {
+  position: relative;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.select-header::after {
+  content: '▼';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.token-select.open .select-header::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* 调整选项布局，为箭头留出空间 */
+.select-header .select-option {
+  padding-right: 30px;
+}
+
+.placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  padding-right: 30px;
+}
+
+/* 添加模态窗口相关样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: rgba(40, 40, 40, 0.95);
+  border-radius: 16px;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+.close-button {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 5px;
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+.close-button:hover {
+  color: #fff;
+}
+
+.modal-body {
+  color: #b8b8b8;
+}
+
+.token-type {
+  margin-bottom: 20px;
+}
+
+.token-type:last-child {
+  margin-bottom: 0;
+}
+
+.token-type h3 {
+  color: #fff;
+  font-size: 16px;
+  margin: 0 0 8px 0;
+}
+
+.token-type p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* 调整 swap-container 的位置，避免被 header 遮挡 */
+.swap-container {
+  margin-top: 80px;
+}
+
+/* 适配移动端 */
+@media (max-width: 768px) {
+  .left-section {
+    gap: 20px;
+  }
+
+  .logo-img img {
+    width: 100px;
+  }
+
+  .main-nav {
+    gap: 15px;
+  }
+
+  .main-nav a {
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+
+  .header {
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-nav {
+    display: none;
+  }
+  
+  .header {
+    padding: 8px 12px;
+  }
+}
+
+/* 修改连接按钮样式 */
+.connect-button {
+  padding: 8px 16px !important;
+  border-radius: 12px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  min-width: 140px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.3s !important;
+  background-color: rgba(255, 196, 0, 0.9) !important;
+  color: #000 !important;
+  border: none !important;
+  position: relative;
+  z-index: 102;
+}
+
+.connect-button:hover {
+  background-color: rgba(255, 196, 0, 1) !important;
+}
+
+/* 确保钱包连接区域可点击 */
+.wallet-connect {
+  position: relative;
+  z-index: 102;
+}
+
+/* 移除之前的样式覆盖 */
+.wallet-connect button::before {
+  display: none;
+}
+
+.wallet-connect button span {
+  display: initial !important;
+}
+
+/* 已连接状态的按钮样式 */
+.wallet-connect div > button {
+  padding: 8px 16px !important;
+  border-radius: 12px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  min-width: 140px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.3s !important;
+  background-color: rgba(255, 196, 0, 0.9) !important;
+  color: #000 !important;
+  border: none !important;
+}
+
+.wallet-connect div > button:hover {
+  background-color: rgba(255, 196, 0, 1) !important;
 }
