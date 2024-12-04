@@ -1,21 +1,37 @@
 body {
-  background-color: #000;
-  color: #fff;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* background-color: #000; */
+    background-image: url(assets/bg.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
+
 
 .swap-container {
   max-width: 450px;
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
   padding: 20px;
   background-color: rgba(32, 32, 32, 0.9);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .wallet-header {
@@ -44,7 +60,7 @@ h1 {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .input-group input {
@@ -148,18 +164,27 @@ button:disabled {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .header {
   width: 100%;
   padding: 16px 24px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
   position: fixed;
   top: 0;
   right: 0;
+}
+
+.logo-img{
+ margin: 10px 0 0 10px;
+}
+.logo-img img{
+  width: 70%;
+  height: 70%;
 }
 
 .wallet-connect {
@@ -293,8 +318,8 @@ button:disabled {
 
 .balance-display {
   font-size: 0.9em;
-  color: #666;
-  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 4px 0;
   text-align: right;
   padding-right: 10px;
 }

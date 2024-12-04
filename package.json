@@ -1,5 +1,5 @@
 {
-  "name": "my-swap-app",
+  "name": "pic-swap",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aptos-labs/ts-sdk": "^1.33.1",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-scroll-area": "^1.2.1",
+    "@radix-ui/react-tabs": "^1.1.1",
+    "@razorlabs/wallet-kit": "^0.5.0",
+    "@routexio/sdk": "^0.2.3",
+    "lucide-react": "^0.464.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "@razorlabs/wallet-kit": "^0.1.15",
-    "@routexio/sdk": "^0.1.0",
-    "@aptos-labs/wallet-adapter-react": "^1.5.0",
-    "aptos": "^1.20.0"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Routex, Network, getDefaultClient, FA_ADDRESSES } from "@routexio/sdk";
+import { Routex, Network, getDefaultClient } from "@routexio/sdk";
 import { AptosConnectButton, useAptosWallet, useAptosAccountBalance } from '@razorlabs/wallet-kit';
+import logo from "./assets/logo.png";
 import './App.css';
+
 function App() {
   const [fromToken, setFromToken] = useState('');
   const [toToken, setToToken] = useState('');
@@ -126,6 +128,7 @@ function App() {
         });
 
         const routingInfo = await routex.getRouting(fromToken, toToken, amountWithDecimal);
+        
         console.log('Received routing information:', {
           ...routingInfo,
           amount_in: routingInfo.amount_in?.toString(),
@@ -236,6 +239,7 @@ function App() {
   return (
     <div className="app-container">
       <div className="header">
+        <div className="logo-img"><img src={logo} alt="" /></div>
         <div className="wallet-connect">
           <div>
             <AptosConnectButton />
