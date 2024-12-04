@@ -19,19 +19,37 @@ body {
 
 
 .swap-container {
-  max-width: 450px;
-  width: 90%;
+  max-width: 80vw;
+  width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 15px;
   background-color: rgba(32, 32, 32, 0.9);
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-height: 90vh;
+  position: relative;
+  top: 0;
+  left: 0;
+  transform: scale(0.8);
+  transform-origin: center;
+  max-height: 100vh;
   overflow-y: auto;
+  backface-visibility: hidden; /* 改善渲染 */
+  perspective: 1000px; /* 改善渲染 */
+  font-size: calc(1em * var(--scale-factor));
+}
+
+@media (max-width: 768px) {
+  .swap-container {
+    padding: 10px;
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 576px) {
+  .swap-container {
+    padding: 8px;
+    max-width: 95vw;
+  }
 }
 
 .wallet-header {
@@ -872,4 +890,47 @@ h1 {
 
 .wallet-connect div > button:hover {
   background-color: rgba(255, 196, 0, 1) !important;
+}
+
+.swap-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.token-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.token-tabs button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 0;
+}
+
+.token-tabs button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.token-tabs button.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* 调整标题样式 */
+.swap-header h1 {
+  margin: 0;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

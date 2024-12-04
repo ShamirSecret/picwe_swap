@@ -273,10 +273,26 @@ function App() {
         </div>
 
         <div className="swap-container">
-          <h1>
-            PicWe Swap 
-            <span className="info-icon" onClick={() => setShowInfo(!showInfo)}>?</span>
-          </h1>
+          <div className="swap-header">
+            <h1>
+              PicWe Swap 
+              <span className="info-icon" onClick={() => setShowInfo(!showInfo)}>?</span>
+            </h1>
+            <div className="token-tabs">
+              <button 
+                className={activeTab === 'FA' ? 'active' : ''} 
+                onClick={() => setActiveTab('FA')}
+              >
+                FA
+              </button>
+              <button 
+                className={activeTab === 'COIN' ? 'active' : ''} 
+                onClick={() => setActiveTab('COIN')}
+              >
+                COIN
+              </button>
+            </div>
+          </div>
           
           {showInfo && (
             <div className="modal-overlay" onClick={() => setShowInfo(false)}>
@@ -298,21 +314,6 @@ function App() {
               </div>
             </div>
           )}
-          
-          <div className="token-tabs">
-            <button 
-              className={activeTab === 'FA' ? 'active' : ''} 
-              onClick={() => setActiveTab('FA')}
-            >
-              FA Tokens
-            </button>
-            <button 
-              className={activeTab === 'COIN' ? 'active' : ''} 
-              onClick={() => setActiveTab('COIN')}
-            >
-              Coin Tokens
-            </button>
-          </div>
           
           <div className="swap-form">
             <div className="input-group">
