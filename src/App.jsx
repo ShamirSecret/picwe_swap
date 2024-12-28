@@ -262,9 +262,9 @@ function App() {
               <img src={logo} alt="" />
             </div>
             <nav className="main-nav">
-              <a href="https://app.picwe.org/swap" target="_blank" rel="noopener noreferrer">OmiSwap</a>
-              <a href="https://app.picwe.org/mint" target="_blank" rel="noopener noreferrer">WeUSD</a>
-              <a href="https://app.picwe.org/mint" target="_blank" rel="noopener noreferrer">Docs</a>
+              <a href="" target="_blank" rel="noopener noreferrer">OmiSwap</a>
+              <a href="https://pipi.picwe.org" target="_blank" rel="noopener noreferrer">PiPi&WeUSD</a>
+              <a href="https://pipi.picwe.org" target="_blank" rel="noopener noreferrer">Docs</a>
             </nav>
           </div>
           <div className="wallet-connect">
